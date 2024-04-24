@@ -365,31 +365,6 @@ var ball = Bodies.circle(window.innerWidth / 2, 0, 20, {
     }
 });
 
-// Event listener for exit box collisions 
-Events.on(engine, 'collisionStart', function(event) {
-    var pairs = event.pairs;
-    pairs.forEach(function(pair) {
-        if (pair.bodyA.label === 'ExitBox' && balls.includes(pair.bodyB)) {
-            userBalance += pair.bodyB.betAmount * pair.bodyA.multiplier;
-            updateUserBalanceDisplayAnimated(); 
-            removeBall(pair.bodyB);
-            var exitBoxIndex = exitBoxes.indexOf(pair.bodyA);
-            if (exitBoxIndex !== -1) {
-                exitBoxCounters[exitBoxIndex]++;
-            }
-        } else if (pair.bodyB.label === 'ExitBox' && balls.includes(pair.bodyA)) {
-            userBalance += pair.bodyA.betAmount * pair.bodyB.multiplier;
-            updateUserBalanceDisplayAnimated(); 
-            removeBall(pair.bodyA);
-            var exitBoxIndex = exitBoxes.indexOf(pair.bodyB);
-            if (exitBoxIndex !== -1) {
-                exitBoxCounters[exitBoxIndex]++;
-            }
-        }
-    });
-    //Update all exit box counters after collision
-    updateAllExitBoxCounters();
-});
 
 //Function to update ball hits counter
 function updateBallHitsCounter() {
@@ -426,7 +401,7 @@ function updateUserBalanceDisplayAnimated() {
     }, 16); 
 }
 
-//Create and append HTML element for ball hits counter
+//Creates and appends HTML element for ball hits counter
 var ballHitsCounter = document.createElement('div');
 ballHitsCounter.id = 'ballHitsCounter';
 ballHitsCounter.style.position = 'absolute';
@@ -436,7 +411,7 @@ ballHitsCounter.style.color = 'white';
 ballHitsCounter.innerText = 'Ball Hits: 0';
 document.body.appendChild(ballHitsCounter);
 
-// Create HTML element for the option button
+//Creates HTML element for the option button
 var toggleMetricsButton = document.createElement('button');
 toggleMetricsButton.id = 'toggleMetricsButton';
 toggleMetricsButton.innerText = 'Toggle Metrics';

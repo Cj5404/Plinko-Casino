@@ -340,29 +340,42 @@ Events.on(runner, 'tick', function(event) {
     updateBallGravity();
 });
 
-//Event listener for spacebar press
-document.addEventListener('keydown', function(event) {
-    if (event.code === 'Space') {
-        var betAmount = parseFloat(betInput.value);
-        if (!isNaN(betAmount) && betAmount > 0 && userBalance >= betAmount) {
-            //Deduct the bet amount from user's balance
-            userBalance -= betAmount;
-            updateUserBalanceDisplayAnimated()
+function addBall() {
+    var betAmount = parseFloat(betInput.value);
+    if (!isNaN(betAmount) && betAmount > 0 && userBalance >= betAmount) {
+        //Deduct the bet amount from user's balance
+        userBalance -= betAmount;
+        updateUserBalanceDisplayAnimated()
 
-//Spawn a new ball at the top center of the screen
-var ball = Bodies.circle(window.innerWidth / 2, 0, 20, {
-    restitution: 0.5,
-    collisionFilter: { group: ballCollisionGroup },
-    betAmount: betAmount,
-    render: ballRenderOptions //Applys common rendering options
-});
-            balls.push(ball); 
-            Composite.add(engine.world, ball);
-        } else {
-            //Notifys user if bet amount is invalid or exceeds balance
-            alert('Invalid bet amount or insufficient balance.');
-        }
+        //Spawn a new ball at the top center of the screen
+        var ball = Bodies.circle(window.innerWidth / 2, 0, 20, {
+            restitution: 0.5,
+            collisionFilter: { group: ballCollisionGroup },
+            betAmount: betAmount,
+            render: ballRenderOptions //Applys common rendering options
+        });
+        balls.push(ball);
+        Composite.add(engine.world, ball);
+    } else {
+        //Notifys user if bet amount is invalid or exceeds balance
+        alert('Invalid bet amount or insufficient balance.');
     }
+}
+
+
+//Event listener for spacebar press
+document.addEventListener('keydown', function (event) {
+    if (event.code === 'Space') {
+        addBall();
+    }
+});
+
+// Auto button for adding balls automatically
+document.getElementById('autoButton').addEventListener('click', function () {
+    setInterval(function () {
+        document.getElementById('betInput').value = 1;
+        addBall();
+    }, 1500);
 });
 
 
